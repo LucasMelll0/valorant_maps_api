@@ -20,18 +20,18 @@ public class MapsController {
 
     @PostMapping("/api/maps")
     @ResponseBody
-    public ResponseEntity<?> createMap(@RequestBody Map map, @RequestParam String language){
+    public ResponseEntity<?> createMap(@RequestBody Map map, @RequestParam String language) {
         return service.save(map, language);
     }
 
     @GetMapping("/api/maps")
     @ResponseBody
-    public ResponseEntity<?> findAllMaps(@RequestParam String language) {
+    public ResponseEntity<?> findAllMaps(@RequestParam(required = false) String language) {
         return service.findAll(language);
     }
 
     @GetMapping("api/maps/{uuid}")
-    public ResponseEntity<?> findMapByUuid(@PathVariable String uuid, @RequestParam String language) {
+    public ResponseEntity<?> findMapByUuid(@PathVariable String uuid, @RequestParam(required = false) String language) {
         return service.findByUuid(uuid, language);
     }
 }

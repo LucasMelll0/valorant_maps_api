@@ -59,7 +59,9 @@ public class MapService {
     }
 
     public ResponseEntity<?> findAll(String language) {
-        if (language.equals(PT_BR)) {
+        if (language == null) {
+            return new ResponseEntity<>(enRepository.findAll(), HttpStatus.OK);
+        } else if (language.equals(PT_BR)) {
             return new ResponseEntity<>(ptRepository.findAll(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(enRepository.findAll(), HttpStatus.OK);
@@ -67,7 +69,14 @@ public class MapService {
     }
 
     public ResponseEntity<?> findByUuid(String uuid, String language) {
-        if (language.equals(PT_BR)) {
+        if (language == null) {
+            if (enRepository.countByUuid(uuid) > 0) {
+                return new ResponseEntity<>(enRepository.findByUuid(uuid), HttpStatus.OK);
+            } else {
+                message.setMessage("Not Found");
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+            }
+        } else if (language.equals(PT_BR)) {
             if (ptRepository.countByUuid(uuid) > 0) {
                 return new ResponseEntity<>(ptRepository.findByUuid(uuid), HttpStatus.OK);
             } else {
